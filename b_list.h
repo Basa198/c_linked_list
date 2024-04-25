@@ -33,19 +33,16 @@ b_list* b_new_list();
 */
 b_list* b_new_list_with_func(void (*free)(void *));
 
-void b_list_push_front(b_list *list, b_list_node *node);
-void b_list_push_back(b_list *list, b_list_node *node);
+b_list_node* b_list_rpush(b_list *list, b_list_node *node);
+b_list_node* b_list_lpush(b_list *list, b_list_node *node);
 
-b_list_node* b_list_front(b_list *list);
-b_list_node* b_list_back(b_list *list);
-
-void b_list_pop_back(b_list *list);
-void b_list_pop_front(b_list *list);
+b_list_node* b_list_rpop(b_list *list);
+b_list_node* b_list_lpop(b_list *list);
 
 b_list_node* b_list_fetch(b_list *list, int index);
 b_list_node* b_list_find(b_list *list, int (*match)(void *a, void *b), void *data);
 
-void b_list_insert(b_list *list, b_list_node *node, int index);
+b_list_node* b_list_insert(b_list *list, b_list_node *new_node, int index);
 
 void b_list_delete(b_list *list, b_list_node *node);
 void b_list_delete_at(b_list *list, int index);
@@ -56,7 +53,7 @@ void b_list_sort(b_list *list, int (*compare)(void *a, void *b));
 
 b_list_iterator* b_new_list_iterator(b_list *list, b_list_iterator_direction direction);
 b_list_iterator* b_new_list_iterator_from_node(b_list_node *node, b_list_iterator_direction direction);
-b_list_iterator* b_new_list_iterator_from_index(b_list_iterator *list, int index, b_list_iterator_direction direction); 
+b_list_iterator* b_new_list_iterator_from_index(b_list *list, int index, b_list_iterator_direction direction); 
 b_list_node* b_list_iterator_next(b_list_iterator *it); 
 void b_free_list_iterator(b_list_iterator *it);
 
