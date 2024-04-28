@@ -372,37 +372,33 @@ static void test_b_list_iterator_next() {
 }
 
 int compare(void *a, void *b) {
-    return (int*)b - (int*)a;
+    return *(int*)a - *(int*)b;
 }
 
 static void test_b_list_sort() {
     b_list *list = b_new_list();
-    int x1 = 10;
-    int x2 = 4;
-    int x3 = -5;
-    int x4 = 14;
-    int x5 = 12;
-    b_list_node *node = b_new_list_node(&x1);
-    b_list_node *node1 = b_new_list_node(&x2);
-    b_list_node *node2 = b_new_list_node(&x3);
-    b_list_node *node3 = b_new_list_node(&x4);
-    b_list_node *node4 = b_new_list_node(&x5);
-    int arr[5] = {14, 12, 10, 4, -5};
-    b_list_rpush(list, node);
-    b_list_rpush(list, node1);
-    b_list_rpush(list, node2);
-    b_list_rpush(list, node3);
-    b_list_rpush(list, node4);
-    b_list_sort(list, compare);
-    b_list_iterator *it = b_new_list_iterator(list, LIST_END);
-    int i = 0;
-    while (i < 5) {
-        printf("%d\n", *(int*)(b_list_iterator_next(it)->data)); 
-        // assert(*(int*)(it->next->data) == arr[i]);
-        i++;
+    int arr[100] = {69, 55, 42, 72, 5, 41, 14, 37, 58, 46, 7, 84, 82, 34, 12, 94, 79, 27, 52, 76, 19, 71, 96, 69, 51, 35, 12, 45, 98, 16, 48, 50, 49, 22, 80, 48, 67, 73, 10, 79, 50, 69, 46, 98, 1, 34, 92, 0, 50, 94, 97, 58, 100, 36, 25, 43, 12, 8, 64, 9, 16, 39, 55, 84, 5, 13, 75, 85, 68, 33, 18, 97, 39, 42, 33, 45, 39, 79, 98, 39, 8, 21, 42, 36, 51, 99, 79, 0, 20, 70, 62, 50, 42, 22, 49, 98, 14, 49, 78, 20};
+    for (int i = 0; i < 100; i++) { 
+        b_list_rpush(list, b_new_list_node(&(arr[i])));
     }
+    int sorted_arr[100] = {0, 0, 1, 5, 5, 7, 8, 8, 9, 10, 12, 12, 12, 13, 14, 14, 16, 16, 18, 19, 20, 20, 21, 22, 22, 25, 27, 33, 33, 34, 34, 35, 36, 36, 37, 39, 39, 39, 39, 41, 42, 42, 42, 42, 43, 45, 45, 46, 46, 48, 48, 49, 49, 49, 50, 50, 50, 50, 51, 51, 52, 55, 55, 58, 58, 62, 64, 67, 68, 69, 69, 69, 70, 71, 72, 73, 75, 76, 78, 79, 79, 79, 79, 80, 82, 84, 84, 85, 92, 94, 94, 96, 97, 97, 98, 98, 98, 98, 99, 100};    
+    
+    b_list_sort(list, compare);
+    assert(*(int*)(list->head->data) == 0);
+    assert(*(int*)(list->tail->data) == 100);
+    assert(list->head->prev == NULL);
+    assert(list->tail->next == NULL);
+    b_list_iterator *it = b_new_list_iterator(list, LIST_BEGIN);
+    b_list_iterator *it1 = b_new_list_iterator(list, LIST_END);
+    int i = 0;
+    while (i < 100) {
+        assert(*(int*)(b_list_iterator_next(it)->data) == sorted_arr[i]);
+        assert(*(int*)(b_list_iterator_next(it1)->data) == sorted_arr[99 - i]);
+        i++;
+    } 
 
     b_free_list_iterator(it);
+    b_free_list_iterator(it1);
     b_free_list(list);
 }
 

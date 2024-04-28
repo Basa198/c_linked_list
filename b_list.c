@@ -198,14 +198,8 @@ static void merge(b_list_node **l1, b_list_node **l2, b_list_node **tail_ref, in
     b_list_node *node = &start;
     b_list_node *left = *l1;
     b_list_node *right = *l2;
-    if (!left) {
-        *l1 = right;
-        return;
-    }
-    if (!right) return;
     b_list_node *prev = NULL;
     while (left && right) {
-        printf("1) %d 2) %d\n", *(int*)left->data, *(int*)right->data);
         int comp = compare(left->data, right->data);
         if (comp <= 0) {
             node->next = left;
@@ -241,12 +235,10 @@ static void merge_sort(b_list_node **head_ref, b_list_node **tail_ref, int (*com
         l2 = l2->next->next;
     }
     l2 = l1->next;
-    l1->next = l2->prev = NULL;
+    l1->next = NULL;
     l1 = head;
-
     merge_sort(head_ref, tail_ref, compare);
     merge_sort(&l2, tail_ref, compare);
-
     merge(head_ref, &l2, tail_ref, compare);
 }
 
